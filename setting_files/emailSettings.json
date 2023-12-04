@@ -1,0 +1,1 @@
+{"SmtpServer":"smtp.mail.ru","SmtpPort":465,"SmtpUsername":"your_email_auth_address","SmtpPassword":"your_email_auth_password","SenderName":"name_for_sender_random","SenderEmail":"email_using_for_send"}

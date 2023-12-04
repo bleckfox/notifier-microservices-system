@@ -1,0 +1,9 @@
+## Visual Studio
+*/.vscode/
+*/.vs/
+*/bin/
+*/obj/
+
+## Python
+*/__pycache__/
+*/venv/

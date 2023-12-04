@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  gateway_agent:
+    container_name: gateway_agent
+    build: 
+      context: ./notifier_gateway
+    restart: always
+    ports:
+      - "5000:80"
+    networks:
+      - somenet
+    depends_on:
+      - rabbitmq  # контейнер запустится после RabbitMQ
+      - settings_agent
+  
+  notifier_agent:
+    container_name: notifier_agent
+    build: 
+      context: ./notifier_sender
+    # для подключения к контейнеру из внешней среды (здесь для примера)
+    # ports:
+    #   - "4000:80"
+    # просто открыли порт для внутреннего пользования
+    restart: always
+    expose:
+      - "80"
+    networks:
+      - somenet
+    depends_on:
+      - rabbitmq  # контейнер запустится после RabbitMQ
+      - gateway_agent
+      - settings_agent
+  
+  settings_agent:
+    container_name: settings_agent
+    build:
+      context: ./settings_agent
+    # просто открыли порт для внутреннего пользования
+    restart: always
+    expose:
+      - "80"
+    volumes:
+      - ./setting_files:/app/setting_files
+    networks:
+      - somenet
+    depends_on:
+      - rabbitmq  # контейнер запустится после RabbitMQ
+  
+  rabbitmq:
+    image: "rabbitmq:3.9-management"
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"  # Порт для AMQP
+      - "15672:15672"  # Порт для RabbitMQ Management
+    networks:
+      - somenet
+
+networks:
+  somenet:
+    driver: bridge
