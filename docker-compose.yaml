@@ -51,9 +51,11 @@ services:
     image: "rabbitmq:3.9-management"
     container_name: rabbitmq
     restart: always
-    ports:
-      - "5672:5672"  # Порт для AMQP
-      - "15672:15672"  # Порт для RabbitMQ Management
+    expose:
+      - "5672"
+    #ports:
+    #  - "5672:5672"  # Порт для AMQP
+    #  - "15672:15672"  # Порт для RabbitMQ Management
     networks:
       - somenet
 
